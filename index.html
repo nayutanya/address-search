@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>住所検索</title>
+</head>
+<body>
+    <h1>住所検索</h1>
+    <p>郵便番号を入力して住所を検索できます。<br/>
+    郵便番号はハイフン「-」有無どちらでも検索可能です。</br>
+    (000-0000,0000000の形式で入力してください。)</p>
+    <label>
+        <input type="text" id="zipInput" placeholder="郵便番号をを入力してしてください。" maxlength="8">
+    </label>
+    <button id="searchButton" disabled>検索</button>
+    <div id="result"></div>
+    <script src="src/main.js"></script>
+</body>
+</html>
