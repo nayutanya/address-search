@@ -3,17 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>住所検索</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
     <h1>住所検索</h1>
     <p>郵便番号を入力して住所を検索できます。<br/>
     郵便番号はハイフン「-」有無どちらでも検索可能です。</br>
     (000-0000,0000000の形式で入力してください。)</p>
-    <label>
+    <div class="search-area">
         <input type="text" id="zipInput" placeholder="郵便番号をを入力してしてください。" maxlength="8">
-    </label>
-    <button id="searchButton" disabled>検索</button>
-    <div id="result"></div>
+        </label>
+        <button id="searchButton" disabled>検索</button>
+    </div>
+        <div id="result"></div>
+
+    <div class="history-section">
+        <h2>検索履歴</h2>
+        <div class="swiper">
+        <div class="swiper-wrapper" id="historyWrapper">
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+        </div>
+    </div>
+  
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="src/main.js"></script>
 </body>
 </html>

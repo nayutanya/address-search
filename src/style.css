@@ -1,0 +1,67 @@
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.search-area {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+h1, p {
+  text-align: center;
+}
+
+input {
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #000000;
+  border-radius: 8px;
+  width: 300px;
+}
+
+button {
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#result {
+  margin-top: 16px;
+}
+#result .result-card {
+  border: 1px solid #000000;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffffff;
+}
+#result hr {
+  border: none;
+  border-top: 1px solid #000000;
+}
+
+.history-section {
+  margin-top: 32px;
+}
+.history-section h2 {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.swiper {
+  width: 100%;
+  padding-bottom: 40px;
+}
+
+.history-card {
+  border: 1px solid #000000;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+/*# sourceMappingURL=style.css.map */

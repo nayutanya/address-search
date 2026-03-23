@@ -9,15 +9,68 @@ interface Address{
     kana3: string;
 }
 
-interface ApiResponse {
+interface ApiResponse{
     status: number;
     results: Address[] | null;
+}
+
+interface HistoryItem{
+    zipcode: string;
+    addresses: { address: string; kana: string; }[];
 }
   
 //ボタンを押したときの処理
 const searchButton = document.getElementById("searchButton") as HTMLButtonElement;
 const zipInput = document.getElementById("zipInput") as HTMLInputElement;
 const resultDiv = document.getElementById("result") as HTMLDivElement;
+let histories: HistoryItem[] = [];
+
+//Swiper設定
+const swiper = new (window as any).Swiper(".swiper", {
+    slidesPerView: 3,
+    spaceBetween: 16,
+    pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+    },
+    navigation: {
+        prevEl: ".swiper-button-prev",
+        nextEl: ".swiper-button-next",
+    },
+    allowTouchMove: true,
+    loop: false,
+    breakpoints: {
+        0: {
+            slidesPerView: 1,
+        },
+        768: {
+            slidesPerView: 3,
+        }
+    }
+});
+
+//検索履歴
+function addHistory(item: HistoryItem) {
+    histories.unshift(item);
+
+    const wrapper = document.getElementById("historyWrapper") as HTMLElement;
+    const slide = document.createElement("div");
+    slide.className = "swiper-slide";
+    slide.innerHTML = `
+        <div class="history-card">
+            <p class="history-zip">郵便番号：${item.zipcode}</p>
+            <hr>
+            ${item.addresses.map(a => `
+                <p class="history-address">住所：${a.address}</p>
+                <p class="history-kana">カナ：${a.kana}</p>
+                <hr>
+            `).join("")}
+        </div>
+    `;
+    wrapper.insertBefore(slide, wrapper.firstChild);
+    swiper.update();
+}
+
 zipInput.addEventListener("input", () => {
     searchButton.disabled = zipInput.value.trim() === "";
 });
@@ -45,12 +98,28 @@ searchButton.addEventListener("click", async () => {
         }
 
         //結果を表示
-        resultDiv.innerHTML = data.results.map(addr => `
-        <p>郵便番号:${addr.zipcode}</p>
-        <p>住所:${addr.address1}${addr.address2}${addr.address3}</p>
-        <p>カナ:${addr.kana1}${addr.kana2}${addr.kana3}</p>
-        <hr>
-        `).join("");
+        resultDiv.innerHTML = `
+            <div class="result-card">
+                <p>郵便番号：${data.results?.[0]?.zipcode}</p>
+                <hr>
+                ${data.results.map(addr => `
+                    <p>住所：${addr.address1}${addr.address2}${addr.address3}</p>
+                    <p>カナ：${addr.kana1}${addr.kana2}${addr.kana3}</p>
+                    <hr>
+                `).join("")}
+            </div>
+        `;
+
+        const first = data.results?.[0];
+        if(first){
+            addHistory({
+                zipcode: first.zipcode,
+                addresses: data.results.map(addr => ({
+                    address: `${first.address1}${first.address2}${first.address3}`,
+                    kana: `${first.kana1}${first.kana2}${first.kana3}`,
+                })),
+            });
+        }
 
     } catch (error) {
     resultDiv.textContent = "エラーが発生しました。";
