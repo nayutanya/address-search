@@ -5,6 +5,10 @@ body {
   padding: 16px;
 }
 
+h1, p {
+  text-align: center;
+}
+
 .search-area {
   display: flex;
   justify-content: center;
@@ -12,16 +16,17 @@ body {
   margin-top: 16px;
 }
 
-h1, p {
-  text-align: center;
-}
-
 input {
   padding: 8px;
   font-size: 1rem;
   border: 1px solid #000000;
   border-radius: 8px;
-  width: 300px;
+  width: 200px;
+}
+@media (min-width: 768px) {
+  input {
+    width: 300px;
+  }
 }
 
 button {

@@ -1,4 +1,4 @@
-interface Address{
+interface Address {
     zipcode: string;
     prefcode: string;
     address1: string;
@@ -9,24 +9,27 @@ interface Address{
     kana3: string;
 }
 
-interface ApiResponse{
+interface ApiResponse {
     status: number;
     results: Address[] | null;
 }
 
-interface HistoryItem{
+interface HistoryItem {
     zipcode: string;
-    addresses: { address: string; kana: string; }[];
+    addresses: { address: string; kana: string }[];
 }
-  
+
 //ボタンを押したときの処理
-const searchButton = document.getElementById("searchButton") as HTMLButtonElement;
+const searchButton = document.getElementById(
+    "searchButton"
+) as HTMLButtonElement;
 const zipInput = document.getElementById("zipInput") as HTMLInputElement;
 const resultDiv = document.getElementById("result") as HTMLDivElement;
 let histories: HistoryItem[] = [];
 
 //Swiper設定
-const swiper = new (window as any).Swiper(".swiper", {
+import Swiper from "swiper";
+const swiper = new Swiper(".swiper", {
     slidesPerView: 3,
     spaceBetween: 16,
     pagination: {
@@ -45,8 +48,8 @@ const swiper = new (window as any).Swiper(".swiper", {
         },
         768: {
             slidesPerView: 3,
-        }
-    }
+        },
+    },
 });
 
 //検索履歴
@@ -60,11 +63,15 @@ function addHistory(item: HistoryItem) {
         <div class="history-card">
             <p class="history-zip">郵便番号：${item.zipcode}</p>
             <hr>
-            ${item.addresses.map(a => `
+            ${item.addresses
+                .map(
+                    (a) => `
                 <p class="history-address">住所：${a.address}</p>
                 <p class="history-kana">カナ：${a.kana}</p>
                 <hr>
-            `).join("")}
+            `
+                )
+                .join("")}
         </div>
     `;
     wrapper.insertBefore(slide, wrapper.firstChild);
@@ -74,22 +81,26 @@ function addHistory(item: HistoryItem) {
 zipInput.addEventListener("input", () => {
     searchButton.disabled = zipInput.value.trim() === "";
 });
-  
+
 searchButton.addEventListener("click", async () => {
     const zip = zipInput.value.trim();
     const zipClean = zip.replace(/-/g, "");
 
     //エラー処理
-    if (/[^\d-]/.test(zip)){
-        resultDiv.textContent = "郵便番号は半角数字のみまたは半角数字とハイフンのみで入力してください。"
+    if (/[^\d-]/.test(zip)) {
+        resultDiv.textContent =
+            "郵便番号は半角数字のみまたは半角数字とハイフンのみで入力してください。";
         return;
     }
     if (!/^\d{7}$/.test(zip) && !/^\d{3}-\d{4}$/.test(zip)) {
-        resultDiv.textContent = "郵便番号は半角数字とハイフンありの8桁かハイフンなしの7桁で入力してください。";
+        resultDiv.textContent =
+            "郵便番号は半角数字とハイフンありの8桁かハイフンなしの7桁で入力してください。";
         return;
     }
-    try{
-        const response = await fetch(`https://zipcloud.ibsnet.co.jp/api/search?zipcode=${zipClean}`);
+    try {
+        const response = await fetch(
+            `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${zipClean}`
+        );
         const data: ApiResponse = await response.json();
 
         if (!data.results) {
@@ -102,26 +113,29 @@ searchButton.addEventListener("click", async () => {
             <div class="result-card">
                 <p>郵便番号：${data.results?.[0]?.zipcode}</p>
                 <hr>
-                ${data.results.map(addr => `
+                ${data.results
+                    .map(
+                        (addr) => `
                     <p>住所：${addr.address1}${addr.address2}${addr.address3}</p>
                     <p>カナ：${addr.kana1}${addr.kana2}${addr.kana3}</p>
                     <hr>
-                `).join("")}
+                `
+                    )
+                    .join("")}
             </div>
         `;
 
         const first = data.results?.[0];
-        if(first){
+        if (first) {
             addHistory({
                 zipcode: first.zipcode,
-                addresses: data.results.map(addr => ({
-                    address: `${first.address1}${first.address2}${first.address3}`,
-                    kana: `${first.kana1}${first.kana2}${first.kana3}`,
+                addresses: data.results.map((addr) => ({
+                    address: `${addr.address1}${addr.address2}${addr.address3}`,
+                    kana: `${addr.kana1}${addr.kana2}${addr.kana3}`,
                 })),
             });
         }
-
-    } catch (error) {
-    resultDiv.textContent = "エラーが発生しました。";
+    } catch (_error) {
+        resultDiv.textContent = "エラーが発生しました。";
     }
 });

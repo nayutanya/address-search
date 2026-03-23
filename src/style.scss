@@ -1,11 +1,16 @@
 $border-color: #000000;
 $border-radius: 8px;
+$breakpoint: 768px;
 
 body {
     font-family: sans-serif;
     max-width: 800px;
     margin: 0 auto;
     padding: 16px;
+}
+
+h1, p{
+    text-align: center;
 }
 
 .search-area {
@@ -15,16 +20,16 @@ body {
     margin-top: 16px;
 }
 
-h1, p{
-    text-align: center;
-}
-
 input {
     padding: 8px;
     font-size: 1rem;
     border: 1px solid $border-color;
     border-radius: $border-radius;
-    width: 300px;
+    width: 200px;
+
+    @media (min-width: $breakpoint) {
+        width: 300px;
+    }
 }
 
 button {
@@ -50,8 +55,8 @@ button {
 .history-section {
     margin-top: 32px;
     h2 {
-    font-size: 1.2rem;
-    text-align: center;
+        font-size: 1.2rem;
+        text-align: center;
     }
 }
 
