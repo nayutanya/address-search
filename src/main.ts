@@ -29,7 +29,10 @@ let histories: HistoryItem[] = [];
 
 //Swiper設定
 import Swiper from "swiper";
+import { Navigation, Pagination } from "swiper/modules";
+
 const swiper = new Swiper(".swiper", {
+    modules: [Navigation, Pagination],
     slidesPerView: 3,
     spaceBetween: 16,
     pagination: {

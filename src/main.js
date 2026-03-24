@@ -4,7 +4,8 @@ const zipInput = document.getElementById("zipInput");
 const resultDiv = document.getElementById("result");
 let histories = [];
 //Swiper設定
-const swiper = new window.Swiper(".swiper", {
+import Swiper from "swiper";
+const swiper = new Swiper(".swiper", {
     slidesPerView: 3,
     spaceBetween: 16,
     pagination: {
@@ -23,8 +24,8 @@ const swiper = new window.Swiper(".swiper", {
         },
         768: {
             slidesPerView: 3,
-        }
-    }
+        },
+    },
 });
 //検索履歴
 function addHistory(item) {
@@ -36,11 +37,13 @@ function addHistory(item) {
         <div class="history-card">
             <p class="history-zip">郵便番号：${item.zipcode}</p>
             <hr>
-            ${item.addresses.map(a => `
+            ${item.addresses
+        .map((a) => `
                 <p class="history-address">住所：${a.address}</p>
                 <p class="history-kana">カナ：${a.kana}</p>
                 <hr>
-            `).join("")}
+            `)
+        .join("")}
         </div>
     `;
     wrapper.insertBefore(slide, wrapper.firstChild);
@@ -50,16 +53,18 @@ zipInput.addEventListener("input", () => {
     searchButton.disabled = zipInput.value.trim() === "";
 });
 searchButton.addEventListener("click", async () => {
-    var _a;
+    var _a, _b, _c;
     const zip = zipInput.value.trim();
     const zipClean = zip.replace(/-/g, "");
     //エラー処理
     if (/[^\d-]/.test(zip)) {
-        resultDiv.textContent = "郵便番号は半角数字のみまたは半角数字とハイフンのみで入力してください。";
+        resultDiv.textContent =
+            "郵便番号は半角数字のみまたは半角数字とハイフンのみで入力してください。";
         return;
     }
     if (!/^\d{7}$/.test(zip) && !/^\d{3}-\d{4}$/.test(zip)) {
-        resultDiv.textContent = "郵便番号は半角数字とハイフンありの8桁かハイフンなしの7桁で入力してください。";
+        resultDiv.textContent =
+            "郵便番号は半角数字とハイフンありの8桁かハイフンなしの7桁で入力してください。";
         return;
     }
     try {
@@ -72,27 +77,29 @@ searchButton.addEventListener("click", async () => {
         //結果を表示
         resultDiv.innerHTML = `
             <div class="result-card">
-                <p>郵便番号：${data.results[0].zipcode}</p>
+                <p>郵便番号：${(_b = (_a = data.results) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.zipcode}</p>
                 <hr>
-                ${data.results.map(addr => `
+                ${data.results
+            .map((addr) => `
                     <p>住所：${addr.address1}${addr.address2}${addr.address3}</p>
                     <p>カナ：${addr.kana1}${addr.kana2}${addr.kana3}</p>
                     <hr>
-                `).join("")}
+                `)
+            .join("")}
             </div>
         `;
-        const first = (_a = data.results) === null || _a === void 0 ? void 0 : _a[0];
+        const first = (_c = data.results) === null || _c === void 0 ? void 0 : _c[0];
         if (first) {
             addHistory({
                 zipcode: first.zipcode,
-                addresses: data.results.map(addr => ({
-                    address: `${first.address1}${first.address2}${first.address3}`,
-                    kana: `${first.kana1}${first.kana2}${first.kana3}`,
+                addresses: data.results.map((addr) => ({
+                    address: `${addr.address1}${addr.address2}${addr.address3}`,
+                    kana: `${addr.kana1}${addr.kana2}${addr.kana3}`,
                 })),
             });
         }
     }
-    catch (error) {
+    catch (_error) {
         resultDiv.textContent = "エラーが発生しました。";
     }
 });
