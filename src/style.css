@@ -24,6 +24,11 @@ p {
   color: #be4d84;
   line-height: 1.8;
 }
+@media (max-width: 768px) {
+  p {
+    font-size: 0.85rem;
+  }
+}
 
 .search-area {
   display: flex;
@@ -41,7 +46,6 @@ input {
   outline: none;
   background: #ffffff;
   color: #be4d84;
-  width: 200px;
 }
 input:focus {
   border-color: #fc9fce;
@@ -52,6 +56,12 @@ input::placeholder {
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
   -webkit-text-fill-color: #be4d84;
+}
+@media (max-width: 768px) {
+  input {
+    font-size: 0.6rem;
+    width: 200px;
+  }
 }
 @media (min-width: 768px) {
   input {
@@ -105,7 +115,23 @@ button:disabled {
 
 .swiper {
   width: 100%;
+  height: auto;
   padding-bottom: 48px !important;
+}
+
+.swiper-slide {
+  height: auto !important;
+}
+
+.slide-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+@media (min-width: 768px) {
+  .slide-group {
+    flex-direction: row;
+  }
 }
 
 .swiper-button-prev, .swiper-button-next {
@@ -121,10 +147,12 @@ button:disabled {
 }
 
 .history-card {
+  width: 100%;
   border: 2px solid #fcbedb;
   border-radius: 16px;
   padding: 16px;
   background: #ffffff;
+  box-sizing: border-box;
 }
 .history-card hr {
   border: none;

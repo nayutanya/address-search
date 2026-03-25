@@ -28,7 +28,7 @@ npm install
 npm run dev
 
 4. ブラウザで確認
-http://localhost:5173 を開く
+http://localhost:5174 を開く
 
 ## コマンド一覧
 

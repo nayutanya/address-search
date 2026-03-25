@@ -32,6 +32,10 @@ p{
     font-size: 1rem;
     color: $text;
     line-height: 1.8;
+
+    @media (max-width: $breakpoint) {
+        font-size: 0.85rem;
+    }
 }
 
 .search-area {
@@ -50,7 +54,6 @@ input {
     outline: none;
     background: #ffffff;
     color: $text;
-    width: 200px;
 
     &:focus {
         border-color: $primary;
@@ -62,7 +65,10 @@ input {
         -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
         -webkit-text-fill-color: $text;
     }
-
+    @media (max-width: $breakpoint) {
+        font-size: 0.6rem;
+        width: 200px;
+    }
     @media (min-width: $breakpoint) {
         width: 300px;
     }
@@ -116,7 +122,20 @@ button {
 
 .swiper {
     width: 100%;
+    height: auto;
     padding-bottom: 48px !important;
+}
+.swiper-slide {
+    height: auto !important;
+}
+.slide-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @media (min-width: $breakpoint) {
+        flex-direction: row;
+    }
 }
 .swiper-button-prev, .swiper-button-next {
     color: $accent !important;
@@ -129,10 +148,12 @@ button {
 }
 
 .history-card {
+    width: 100%;
     border: 2px solid $primary-light;
     border-radius: $border-radius;
     padding: 16px;
     background: #ffffff;
+    box-sizing: border-box;
 
     hr {
         border: none;

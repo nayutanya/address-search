@@ -33,8 +33,9 @@ import { Navigation, Pagination } from "swiper/modules";
 
 const swiper = new Swiper(".swiper", {
     modules: [Navigation, Pagination],
-    slidesPerView: 3,
-    spaceBetween: 16,
+    slidesPerView: 1,
+    autoHeight: true,
+    spaceBetween: 30,
     pagination: {
         el: ".swiper-pagination",
         clickable: true,
@@ -43,16 +44,7 @@ const swiper = new Swiper(".swiper", {
         prevEl: ".swiper-button-prev",
         nextEl: ".swiper-button-next",
     },
-    allowTouchMove: true,
     loop: false,
-    breakpoints: {
-        0: {
-            slidesPerView: 1,
-        },
-        768: {
-            slidesPerView: 3,
-        },
-    },
 });
 
 //検索履歴
@@ -60,24 +52,28 @@ function addHistory(item: HistoryItem) {
     histories.unshift(item);
 
     const wrapper = document.getElementById("historyWrapper") as HTMLElement;
-    const slide = document.createElement("div");
-    slide.className = "swiper-slide";
-    slide.innerHTML = `
-        <div class="history-card">
-            <p class="history-zip">郵便番号：${item.zipcode}</p>
-            <hr>
-            ${item.addresses
-                .map(
-                    (a) => `
-                <p class="history-address">住所：${a.address}</p>
-                <p class="history-kana">カナ：${a.kana}</p>
-                <hr>
-            `
-                )
-                .join("")}
+    const chunks: HistoryItem[][] = [];
+    for (let i = 0; i < histories.length; i += 3) {
+        chunks.push(histories.slice(i, i + 3));
+    }
+    wrapper.innerHTML = chunks.map(chunk => `
+        <div class="swiper-slide">
+            <div class="slide-group">
+                ${chunk.map(h => `
+                    <div class="history-card">
+                        <p class="history-zip">郵便番号：${h.zipcode}</p>
+                        <hr>
+                        ${h.addresses.map(a => `
+                            <p class="history-address">住所：${a.address}</p>
+                            <p class="history-kana">カナ：${a.kana}</p>
+                            <hr>
+                        `).join("")}
+                    </div>
+                `).join("")}
+            </div>
         </div>
-    `;
-    wrapper.insertBefore(slide, wrapper.firstChild);
+    `).join("");
+
     swiper.update();
 }
 
